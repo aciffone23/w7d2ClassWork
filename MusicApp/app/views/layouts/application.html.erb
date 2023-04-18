@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MusicApp</title>
+    <style>
+      /* Add snazzy font */
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+      body {
+        font-family: 'Montserrat', sans-serif;
+      }
+
+      /* Flexbox to display logged-in or logged-out info on the right-hand side */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background-color: #333;
+        color: #fff;
+      }
+      .logo {
+        font-size: 30px;
+        font-weight: bold;
+      }
+      .user-info {
+        display: flex;
+        align-items: center;
+      }
+      .user-info img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+
+      /* Default link styling */
+      a {
+        color: #333;
+        text-decoration: none;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #eee;
+      }
+      a:hover {
+        background-color: #ddd;
+      }
+
+      /* Session form styling */
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50px;
+      }
+      label {
+        margin-bottom: 10px;
+      }
+      input[type="text"],
+      input[type="password"] {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 20px;
+        width: 100%;
+      }
+      input[type="submit"] {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      input[type="submit"]:hover {
+        background-color: #555;
+      }
+    </style>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application" %>
+  </head>
+
+  <body>
+
+  <% if logged_in? %>
+      <h2>Welcome, <%= current_user.email %></h2>
+      <form action="<%= session_url %>" method="POST">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>"/>
+
+        <input type="submit" value="Sign-Out">
+
+      </form>
+    <% else %>
+      <a href="<%= new_user_url %>">Sign Up</a>
+      <a href="<%= new_session_url %>">Sign In</a>
+    <% end%>
+    <%= yield %>
+  </body>
+</html>
